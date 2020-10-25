@@ -50,14 +50,15 @@ class DAO(ABC):
     def set_data_source(self, path: str):
         if '.pkl' not in path:
             path = path + '.pkl'
-        self.datasource = path
-        self.__dump()
+        f = open(path, 'wb')
+        pickle.dump(self.objCache, f)
+        f.close()
+    
 
     def import_source(self, path: str):
         f = open(path, 'rb')
         objc = pickle.load(f)
         f.close()
         for cliente in objc.values():
-            print(cliente)
             self.objCache[cliente.codigo] = cliente
         self.__dump()

@@ -1,10 +1,8 @@
 import PySimpleGUI as sg 
-import Cliente
 
 # View do padrão MVC
 class ClienteView():
-    def __init__(self, controlador):
-        self.__controlador = controlador
+    def __init__(self):
         self.__container = []
         self.__largura_resposta = 40 #aux. var
         self.__window = sg.Window('Consulta de clientes', self.__container ,font=('Helvetica', 14))
@@ -25,6 +23,8 @@ class ClienteView():
         self.__window.Element('resultado').set_size((self.__largura_resposta, nlinhas))
 
     def mostra_resultado(self, resultado): 
+        nlinhas = resultado.count("\n")+1
+        self.prepara_area_texto(nlinhas)
         self.__window.Element('resultado').Update(resultado)
 
     def limpa_dados(self):
