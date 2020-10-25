@@ -7,9 +7,9 @@ import PySimpleGUI as sg
 
 class ClienteController:
     def __init__(self):
-        self.__telaCliente = ClienteView(self)
-        self.__telaExport = ExportView(self)
-        self.__telaImport = ImportView(self)
+        self.__telaCliente = ClienteView()
+        self.__telaExport = ExportView()
+        self.__telaImport = ImportView()
         self.__clienteDAO = ClienteDAO()
 
         sg.theme('Reddit')
@@ -29,9 +29,7 @@ class ClienteController:
                 import_active = self.handle_import()
             else:
                 event, values = self.__telaCliente.le_eventos()
-                self.__telaCliente.prepara_area_texto(1)
 
-                print(event, values)
                 if event == sg.WIN_CLOSED:
                     self.__telaCliente.fim()
                     break
@@ -50,10 +48,8 @@ class ClienteController:
                         elif event == 'Listar':
                             resultado = self.clientes_to_string()
                         elif event == 'Exportar':
-                            self.__telaExport.tela_consulta()
                             export_active = True 
                         elif event == 'Importar':
-                            self.__telaImport.tela_consulta()
                             import_active = True 
 
 
@@ -108,10 +104,10 @@ class ClienteController:
 
     def clientes_to_string(self):
         clientes = [_[1] for _ in self.__clienteDAO.get_all()]
-        self.__telaCliente.prepara_area_texto(len(clientes))
         return '\n'.join([str(c) for c in clientes])
 
     def handle_export(self):
+        self.__telaExport.tela_consulta()
         event_exp, values_exp = self.__telaExport.le_eventos()
 
         export_active = True
@@ -128,6 +124,7 @@ class ClienteController:
         return export_active
 
     def handle_import(self):
+        self.__telaImport.tela_consulta()
         event_exp, values_exp = self.__telaImport.le_eventos()
 
         import_active = True
